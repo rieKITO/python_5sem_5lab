@@ -1,10 +1,12 @@
+# ---------------- MODELS ---------------- #
 from models.object import Object
 from models.thread import Thread
-from dynamic_library import DynamicLibrary
+from models.dynamic_library import DynamicLibrary
 
 
 class Process(Object):
-    def __init__(self, id: int, memory: int, name: str, threads: list = None, libraries: list = None):
+    def __init__(self, id: int, memory: int, name: str, threads: list[Thread] = None,
+                 libraries: list[DynamicLibrary] = None):
         super().__init__(id, memory, name)
         self.threads = []
         self.libraries = []
@@ -40,7 +42,8 @@ class Process(Object):
 
     def create_thread(self, thread_id: int, thread_memory: int, thread_name: str):
         if thread_id and thread_memory and thread_name:
-            if type(thread_id) is not int or type(thread_memory) is not int or type(thread_name) is not str:
+            if (type(thread_id) is not int or type(thread_memory) is not int
+                    or type(thread_name) is not str):
                 raise TypeError
             try:
                 thread = Thread(thread_id, thread_memory, thread_name)
@@ -68,7 +71,8 @@ class Process(Object):
 
     def create_library(self, library_id: int, library_memory: int, library_name: str):
         if library_id and library_memory and library_name:
-            if type(library_id) is not int or type(library_memory) is not int or type(library_name) is not str:
+            if (type(library_id) is not int or type(library_memory) is not int or
+                    type(library_name) is not str):
                 raise TypeError
             try:
                 library = DynamicLibrary(library_id, library_memory, library_name)

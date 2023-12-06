@@ -1,8 +1,11 @@
+# ---------------- MODELS ---------------- #
 from models.process import Process
+from models.thread import Thread
+from models.dynamic_library import DynamicLibrary
 
 
 class OS:
-    def __init__(self, processes: list = None):
+    def __init__(self, processes: list[Process] = None):
         self.processes = []
         if processes:
             self.fill_process_list(processes)
@@ -36,12 +39,22 @@ class OS:
         else:
             raise TypeError
 
-    def create_process(self, process_id: int, process_memory: int, process_name: str):
+    def create_process(
+            self, process_id: int,
+            process_memory: int,
+            process_name: str,
+            threads: list[Thread] = None,
+            libraries: list[DynamicLibrary] = None
+    ) -> None:
         if process_id and process_memory and process_name:
             if type(process_id) is not int or type(process_memory) is not int or type(process_name) is not str:
                 raise TypeError
             try:
                 process = Process(process_id, process_memory, process_name)
+                if threads:
+                    process.fill_thread_list(threads)
+                if libraries:
+                    process.fill_library_list(libraries)
                 self.add_process(process)
             except ValueError:
                 raise ValueError

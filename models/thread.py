@@ -1,5 +1,5 @@
+# ---------------- MODELS ---------------- #
 from models.object import Object
-from models.dynamic_library import DynamicLibrary
 
 
 class Thread(Object):
