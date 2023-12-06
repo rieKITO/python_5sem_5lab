@@ -59,7 +59,7 @@ class Process(Object):
 
         thread: Thread = self.search_thread_from_id(thread_id)
         try:
-            self.libraries.remove(thread)
+            self.threads.remove(thread)
             thread.delete()
         except ValueError:
             raise ValueError

@@ -2,19 +2,19 @@
 from input_handling.natural_num_with_max_range_input import natural_num_with_max_range_input
 
 # ---------------- MODELS ---------------- #
-from models.os import OS
+from models.process import Process
 
 
-def delete_process(os: OS):
-    if os is None:
+def delete_library(process: Process):
+    if process is None:
         raise ValueError
-    if type(os) is not OS:
+    if type(process) is not Process:
         raise TypeError
 
-    print("Enter the process ID:")
-    process_id = natural_num_with_max_range_input(len(os.processes))
+    print("Enter the dynamic library ID:")
+    library_id = natural_num_with_max_range_input(len(process.libraries))
     try:
-        os.delete_process_from_id(process_id)
+        process.delete_library_from_id(library_id)
     except ValueError:
         raise ValueError
 

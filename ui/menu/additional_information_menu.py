@@ -1,6 +1,6 @@
 def additional_information_process_menu() -> None:
     print(
-        "\nWould you like to see more information about this process?\n"
+        "\nWant to take additional actions on this process?\n"
         "Y - YES\n"
         "Any other key - NO"
     )

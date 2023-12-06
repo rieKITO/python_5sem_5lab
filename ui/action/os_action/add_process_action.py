@@ -4,7 +4,7 @@ import random
 from models.os import OS
 
 
-def add_process_action(os: OS):
+def add_process(os: OS):
     if os is None:
         raise ValueError
     if type(os) is not OS:
