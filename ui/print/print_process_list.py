@@ -33,7 +33,7 @@ def print_process_list(processes: list[Process]) -> None:
             before_name_spaces = before_name_spaces[:-1]
         for i in range(len(process.name) - 1):
             before_memory_spaces = before_memory_spaces[:-1]
-        print(f"{process.id} {before_name_spaces} {process.name} {before_memory_spaces} {process.memory}")
+        print(f"{process.id} {before_name_spaces} {process.name} {before_memory_spaces} {process.calculate_memory}")
         for i in range(len(str(process.id)) - 1):
             before_name_spaces += " "
         for i in range(len(str(process.name)) - 1):

@@ -5,8 +5,30 @@ from models.dynamic_library import DynamicLibrary
 
 
 class Process(Object):
-    def __init__(self, id: int, memory: int, name: str, threads: list[Thread] = None,
-                 libraries: list[DynamicLibrary] = None):
+    def __init__(
+            self, id: int,
+            memory: int,
+            name: str,
+            threads: list[Thread] = None,
+            libraries: list[DynamicLibrary] = None
+    ):
+        if id is None \
+                or memory is None \
+                or name is None:
+            raise ValueError
+        elif type(id) is not int \
+                or type(memory) is not int \
+                or type(name) is not str:
+            raise TypeError
+        elif threads:
+            for thread in threads:
+                if type(thread) is not Thread:
+                    raise TypeError
+        elif libraries:
+            for library in libraries:
+                if type(library) is not DynamicLibrary:
+                    raise TypeError
+
         super().__init__(id, memory, name)
         self.threads = []
         self.libraries = []
@@ -16,6 +38,7 @@ class Process(Object):
             self.fill_library_list(libraries)
 
     def fill_thread_list(self, threads: []):
+        self.threads = []
         if threads:
             for thread in threads:
                 if type(thread) is Thread:
@@ -23,9 +46,10 @@ class Process(Object):
                 else:
                     raise TypeError
         else:
-            raise TypeError
+            raise ValueError
 
     def fill_library_list(self, libraries: list):
+        self.libraries = []
         if libraries:
             for library in libraries:
                 if type(library) is DynamicLibrary:
@@ -33,12 +57,15 @@ class Process(Object):
                 else:
                     raise TypeError
         else:
-            raise TypeError
+            raise ValueError
 
     def add_thread(self, thread: Thread):
-        if type(thread) is not Thread:
-            raise TypeError
-        self.threads.append(thread)
+        if thread:
+            if type(thread) is not Thread:
+                raise TypeError
+            self.threads.append(thread)
+        else:
+            raise ValueError
 
     def create_thread(self, thread_id: int, thread_memory: int, thread_name: str):
         if thread_id and thread_memory and thread_name:
@@ -51,9 +78,11 @@ class Process(Object):
             except ValueError:
                 raise ValueError
         else:
-            raise TypeError
+            raise ValueError
 
     def delete_thread_from_id(self, thread_id: int):
+        if thread_id is None:
+            raise ValueError
         if type(thread_id) is not int:
             raise TypeError
 
@@ -65,9 +94,12 @@ class Process(Object):
             raise ValueError
 
     def add_library(self, library: DynamicLibrary):
-        if type(library) is not DynamicLibrary:
-            raise TypeError
-        self.libraries.append(library)
+        if library:
+            if type(library) is not DynamicLibrary:
+                raise TypeError
+            self.libraries.append(library)
+        else:
+            raise ValueError
 
     def create_library(self, library_id: int, library_memory: int, library_name: str):
         if library_id and library_memory and library_name:
@@ -80,9 +112,11 @@ class Process(Object):
             except ValueError:
                 raise ValueError
         else:
-            raise TypeError
+            raise ValueError
 
     def delete_library_from_id(self, library_id: int):
+        if library_id is None:
+            raise ValueError
         if type(library_id) is not int:
             raise TypeError
 
@@ -93,7 +127,7 @@ class Process(Object):
         except ValueError:
             raise ValueError
 
-    def search_library_from_id(self, library_id):
+    def search_library_from_id(self, library_id: int):
         if library_id:
             if type(library_id) is not int:
                 raise TypeError
@@ -101,10 +135,10 @@ class Process(Object):
                 if library.id == library_id:
                     return library
         else:
-            raise TypeError
+            raise ValueError
         return None
 
-    def search_thread_from_id(self, thread_id):
+    def search_thread_from_id(self, thread_id: int):
         if thread_id:
             if type(thread_id) is not int:
                 raise TypeError
@@ -112,15 +146,16 @@ class Process(Object):
                 if thread.id == thread_id:
                     return thread
         else:
-            raise TypeError
+            raise ValueError
         return None
 
-    def calculate_memory(self):
+    def calculate_memory(self) -> int:
         memory = super().calculate_memory()
         for thread in self.threads:
             memory += thread.memory
         for library in self.libraries:
             memory += library.memory
+        return memory
 
     def delete(self):
         super().delete()
@@ -128,3 +163,5 @@ class Process(Object):
             self.threads.remove(thread)
         for library in self.libraries:
             self.libraries.remove(library)
+        self.threads = []
+        self.libraries = []

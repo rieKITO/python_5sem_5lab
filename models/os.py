@@ -8,9 +8,13 @@ class OS:
     def __init__(self, processes: list[Process] = None):
         self.processes = []
         if processes:
+            for process in processes:
+                if type(process) is not Process:
+                    raise TypeError
             self.fill_process_list(processes)
 
     def fill_process_list(self, processes: list):
+        self.processes = []
         if processes:
             for process in processes:
                 if type(process) is Process:
@@ -18,7 +22,7 @@ class OS:
                 else:
                     raise TypeError
         else:
-            raise TypeError
+            raise ValueError
 
     def search_process_from_id(self, process_id: id):
         if process_id:
@@ -28,7 +32,7 @@ class OS:
                 if process.id == process_id:
                     return process
         else:
-            raise TypeError
+            raise ValueError
         return None
 
     def add_process(self, process: Process):
@@ -37,7 +41,7 @@ class OS:
                 raise TypeError
             self.processes.append(process)
         else:
-            raise TypeError
+            raise ValueError
 
     def create_process(
             self, process_id: int,
@@ -59,9 +63,11 @@ class OS:
             except ValueError:
                 raise ValueError
         else:
-            raise TypeError
+            raise ValueError
 
     def delete_process_from_id(self, process_id: int):
+        if process_id is None:
+            raise ValueError
         if type(process_id) is not int:
             raise TypeError
 
