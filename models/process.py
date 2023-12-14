@@ -73,7 +73,7 @@ class Process(Object):
                     or type(thread_name) is not str):
                 raise TypeError
             try:
-                thread = Thread(thread_id, thread_memory, thread_name)
+                thread = Thread(thread_id, thread_memory, thread_name, self)
                 self.add_thread(thread)
             except ValueError:
                 raise ValueError
@@ -89,7 +89,6 @@ class Process(Object):
         thread: Thread = self.search_thread_from_id(thread_id)
         try:
             self.threads.remove(thread)
-            thread.delete()
         except ValueError:
             raise ValueError
 
@@ -123,7 +122,6 @@ class Process(Object):
         library: DynamicLibrary = self.search_library_from_id(library_id)
         try:
             self.libraries.remove(library)
-            library.delete()
         except ValueError:
             raise ValueError
 

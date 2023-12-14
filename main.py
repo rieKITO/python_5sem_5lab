@@ -12,9 +12,8 @@ from utils.create_random_process_list_with_threads_and_libraries import (
 
 
 def main():
-    os = OS()
-    processes = create_random_process_list_with_threads_and_libraries(10, 5, 5)
-    os.fill_process_list(processes)
+    processes, libraries = create_random_process_list_with_threads_and_libraries(10, 5, 15)
+    os = OS(processes, libraries)
     os_action_choice(os)
 
 

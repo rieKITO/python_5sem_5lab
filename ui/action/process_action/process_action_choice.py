@@ -2,12 +2,14 @@
 from input_handling.natural_num_with_max_range_input import natural_num_with_max_range_input
 
 # ---------------- MODELS ---------------- #
+from models.os import OS
 from models.process import Process
 
 # ---------------- UI ---------------- #
 # ---------- ACTION ---------- #
 # ---- PROCESS ACTION ---- #
-from ui.action.process_action.add_library_action import add_library
+from ui.action.process_action.add_existing_library_action import add_existing_library
+from ui.action.process_action.create_and_add_library_action import create_and_add_library
 from ui.action.process_action.add_thread_action import add_thread
 from ui.action.process_action.delete_library_action import delete_library
 from ui.action.process_action.delete_thread_action import delete_thread
@@ -22,7 +24,7 @@ from ui.print.print_process_info import print_process_info
 from config import ACTION_NUMBER_IN_PROCESS_MENU
 
 
-def process_action_choice(process: Process):
+def process_action_choice(os: OS, process: Process):
     is_exit = False
     while is_exit is False:
         print_process_info(process)
@@ -32,14 +34,16 @@ def process_action_choice(process: Process):
             case 1:
                 add_thread(process)
             case 2:
-                add_library(process)
+                create_and_add_library(os, process)
             case 3:
-                delete_thread(process)
+                add_existing_library(os, process)
             case 4:
-                delete_library(process)
+                delete_thread(process)
             case 5:
-                find_thread(process)
+                delete_library(os, process)
             case 6:
-                find_library(process)
+                find_thread(process)
             case 7:
+                find_library(process)
+            case 8:
                 is_exit = True

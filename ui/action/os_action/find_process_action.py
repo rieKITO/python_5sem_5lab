@@ -31,4 +31,4 @@ def find_process(os: OS):
     additional_information_process_menu()
     additional_info_choice = str(input("-> "))
     if additional_info_choice == "Y" or additional_info_choice == "y":
-        process_action_choice(process)
+        process_action_choice(os, process)

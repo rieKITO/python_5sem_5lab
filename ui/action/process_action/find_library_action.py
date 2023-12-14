@@ -21,5 +21,5 @@ def find_library(process: Process):
         library_id = natural_num_input()
         library = process.search_library_from_id(library_id)
         if library is None:
-            print("Thread with this id does not exist!")
+            print("Library with this id does not exist!")
     print_library_info(library)

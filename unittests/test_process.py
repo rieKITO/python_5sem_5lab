@@ -10,21 +10,23 @@ class TestProcess(unittest.TestCase):
     def setUp(self):
         self.threads = []
         self.libraries = []
-        self.thread1 = Thread(1, 200, "thread 1")
-        self.thread2 = Thread(2, 250, "thread 2")
-        self.threads.append(self.thread1)
-        self.threads.append(self.thread2)
-        self.library1 = DynamicLibrary(1, 200, "library 1")
-        self.library2 = DynamicLibrary(2, 300, "library 2")
-        self.libraries.append(self.library1)
-        self.libraries.append(self.library2)
         self.process = Process(
             1,
             200,
             "process 1",
-            self.threads,
-            self.libraries
         )
+        self.thread1 = Thread(1, 200, "thread 1", self.process)
+        self.thread2 = Thread(2, 250, "thread 2", self.process)
+        self.threads.append(self.thread1)
+        self.threads.append(self.thread2)
+        self.library1 = DynamicLibrary(1, 200, "library 1")
+        self.library2 = DynamicLibrary(2, 300, "library 2")
+        self.library1.add_process(self.process)
+        self.library2.add_process(self.process)
+        self.libraries.append(self.library1)
+        self.libraries.append(self.library2)
+        self.process.fill_thread_list(self.threads)
+        self.process.fill_library_list(self.libraries)
 
     def test_init_with_valid_values(self):
         self.assertEqual(self.process.id, 1)
@@ -69,7 +71,7 @@ class TestProcess(unittest.TestCase):
         self.assertRaises(TypeError, self.process.fill_library_list, True)
 
     def test_add_thread_with_valid_values(self):
-        thread3 = Thread(3, 40, "thread 3")
+        thread3 = Thread(3, 40, "thread 3", self.process)
         self.threads.append(thread3)
         self.process.add_thread(thread3)
         self.assertEqual(self.process.threads, self.threads)

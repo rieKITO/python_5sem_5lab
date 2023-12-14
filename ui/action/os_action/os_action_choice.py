@@ -8,6 +8,7 @@ from models.os import OS
 # ---------- ACTION ---------- #
 # ---- OS ACTION ---- #
 from ui.action.os_action.add_process_action import add_process
+from ui.action.os_action.delete_library_action import delete_library
 from ui.action.os_action.delete_process_action import delete_process
 from ui.action.os_action.find_process_action import find_process
 # ---------- MENU ---------- #
@@ -32,6 +33,8 @@ def os_action_choice(os: OS):
             case 2:
                 delete_process(os)
             case 3:
-                find_process(os)
+                delete_library(os)
             case 4:
+                find_process(os)
+            case 5:
                 is_exit = True

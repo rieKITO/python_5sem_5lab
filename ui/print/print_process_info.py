@@ -21,7 +21,7 @@ def print_process_info(process: Process):
         print(
             f"\nProcess id: {process.id}\n"
             f"Process name: {process.name}\n"
-            f"Process memory: {process.memory}\n"
+            f"Process memory: {process.calculate_memory()}\n"
         )
         print("----- Thread list -----")
         print_thread_list(process.threads)

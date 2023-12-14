@@ -10,5 +10,5 @@ consoleHandler.setFormatter(logging.Formatter("%(asctime)s %(levelname)s %(messa
 LOGGER = logging.getLogger()
 LOGGER.addHandler(consoleHandler)
 
-ACTION_NUMBER_IN_OS_MENU = 4
-ACTION_NUMBER_IN_PROCESS_MENU = 7
+ACTION_NUMBER_IN_OS_MENU = 5
+ACTION_NUMBER_IN_PROCESS_MENU = 8

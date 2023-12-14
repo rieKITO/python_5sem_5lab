@@ -10,7 +10,7 @@ def create_random_process_list_with_threads_and_libraries(
         process_number: int,
         threads_number: int,
         libraries_number: int
-) -> list[Process]:
+):
     if process_number is None \
             or threads_number is None \
             or libraries_number is None:
@@ -21,7 +21,20 @@ def create_random_process_list_with_threads_and_libraries(
         raise TypeError
     else:
         processes: list[Process] = []
+        libraries: list[DynamicLibrary] = []
+        for library_i in range(libraries_number):
+            library: DynamicLibrary = DynamicLibrary(
+                library_i + 1,
+                random.randint(10, 1024),
+                f"library {library_i + 1}"
+            )
+            libraries.append(library)
+
         for process_i in range(process_number):
+            library_number = 0
+            used_libraries: list[bool] = []
+            for i in range(0, len(libraries)):
+                used_libraries.append(False)
             process: Process = Process(
                 process_i + 1,
                 random.randint(10, 1024),
@@ -31,16 +44,19 @@ def create_random_process_list_with_threads_and_libraries(
                 thread: Thread = Thread(
                     thread_i + 1,
                     random.randint(10, 1024),
-                    f"thread {thread_i + 1}"
+                    f"thread {thread_i + 1}",
+                    process
                 )
                 process.add_thread(thread)
-            for library_i in range(libraries_number):
-                library: DynamicLibrary = DynamicLibrary(
-                    library_i + 1,
-                    random.randint(10, 1024),
-                    f"library {library_i + 1}"
-                )
-                process.add_library(library)
+            while library_number <= 2:
+                random_library_id = random.choice(libraries).id
+                if used_libraries[random_library_id - 1] is False:
+                    used_libraries[random_library_id - 1] = True
+                    library: DynamicLibrary = libraries[random_library_id - 1]
+                    library.add_process(process)
+                    process.add_library(library)
+                    library_number += 1
+
             processes.append(process)
 
-    return processes
+    return processes, libraries

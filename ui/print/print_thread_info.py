@@ -16,5 +16,5 @@ def print_thread_info(thread: Thread):
         print(
             f"\nThread id: {thread.id}\n"
             f"Thread name: {thread.name}\n"
-            f"Thread memory: {thread.calculate_memory}\n"
+            f"Thread memory: {thread.calculate_memory()}\n"
         )

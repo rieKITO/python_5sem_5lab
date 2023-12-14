@@ -5,13 +5,19 @@ from models.dynamic_library import DynamicLibrary
 
 
 class OS:
-    def __init__(self, processes: list[Process] = None):
+    def __init__(self, processes: list[Process] = None, libraries: list[DynamicLibrary] = None):
         self.processes = []
+        self.libraries = []
         if processes:
             for process in processes:
                 if type(process) is not Process:
                     raise TypeError
             self.fill_process_list(processes)
+        if libraries:
+            for library in libraries:
+                if type(library) is not DynamicLibrary:
+                    raise TypeError
+            self.fill_library_list(libraries)
 
     def fill_process_list(self, processes: list):
         self.processes = []
@@ -19,6 +25,17 @@ class OS:
             for process in processes:
                 if type(process) is Process:
                     self.processes.append(process)
+                else:
+                    raise TypeError
+        else:
+            raise ValueError
+
+    def fill_library_list(self, libraries: list):
+        self.libraries = []
+        if libraries:
+            for library in libraries:
+                if type(library) is DynamicLibrary:
+                    self.libraries.append(library)
                 else:
                     raise TypeError
         else:
@@ -74,6 +91,34 @@ class OS:
         process: Process = self.search_process_from_id(process_id)
         try:
             self.processes.remove(process)
+            for library in process.libraries:
+                library.remove_process(process)
             process.delete()
         except ValueError:
             raise ValueError
+
+    def delete_library_from_id(self, library_id: int):
+        if library_id is None:
+            raise ValueError
+        if type(library_id) is not int:
+            raise TypeError
+
+        library: DynamicLibrary = self.search_library_from_id(library_id)
+        try:
+            self.libraries.remove(library)
+            for process in library.processes:
+                process.delete_library_from_id(library_id)
+            library.delete()
+        except ValueError:
+            raise ValueError
+
+    def search_library_from_id(self, library_id: id):
+        if library_id:
+            if type(library_id) is not int:
+                raise TypeError
+            for library in self.libraries:
+                if library.id == library_id:
+                    return library
+        else:
+            raise ValueError
+        return None
