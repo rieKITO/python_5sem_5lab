@@ -12,19 +12,20 @@ class TestOs(unittest.TestCase):
         self.threads = []
         self.libraries = []
         self.processes = []
-        self.thread1 = Thread(1, 200, "thread 1")
-        self.thread2 = Thread(2, 250, "thread 2")
-        self.threads.append(self.thread1)
-        self.threads.append(self.thread2)
-        self.library1 = DynamicLibrary(1, 200, "library 1")
-        self.library2 = DynamicLibrary(2, 300, "library 2")
-        self.libraries.append(self.library1)
-        self.libraries.append(self.library2)
-        self.process1 = Process(1, 200, "process 1", self.threads, self.libraries)
-        self.process2 = Process(2, 200, "process 2", self.threads, self.libraries)
+        self.process1 = Process(1, 200, "process 1")
+        self.process2 = Process(2, 200, "process 2")
         self.processes.append(self.process1)
         self.processes.append(self.process2)
-        self.os = OS(self.processes)
+        self.thread1 = Thread(1, 200, "thread 1", self.process1)
+        self.thread2 = Thread(2, 250, "thread 2", self.process2)
+        self.threads.append(self.thread1)
+        self.threads.append(self.thread2)
+        self.library1 = DynamicLibrary(1, 200, "library 1", self.processes)
+        self.library2 = DynamicLibrary(2, 300, "library 2", self.processes)
+        self.libraries.append(self.library1)
+        self.libraries.append(self.library2)
+
+        self.os = OS(self.processes, self.libraries)
 
     def test_init_with_valid_processes_value(self):
         self.assertEqual(self.os.processes, self.processes)
@@ -104,3 +105,4 @@ class TestOs(unittest.TestCase):
         self.assertRaises(TypeError, self.os.delete_process_from_id, True)
         self.assertRaises(TypeError, self.os.delete_process_from_id, {2, 5})
         self.assertRaises(TypeError, self.os.delete_process_from_id, [4])
+

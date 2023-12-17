@@ -92,7 +92,7 @@ class OS:
         try:
             self.processes.remove(process)
             for library in process.libraries:
-                library.remove_process(process)
+                library.remove_process_from_id(process.id)
             process.delete()
         except ValueError:
             raise ValueError
